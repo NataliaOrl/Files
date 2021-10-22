@@ -1,37 +1,33 @@
-with open('1.txt', encoding='utf-8') as file_1:
-    counter_1 = 0
-    lines_1 = ['1.txt\n']
-    while True:
-        line = file_1.readline()
-        if len(line) == 0:
-            break
-        lines_1.append(line)
-        counter_1 += 1
-lines_1.insert(1, str(counter_1))
-lines_1.insert(2, '\n')     
-print(lines_1)
+def read_file(file):
+    with open(file, encoding='utf-8') as f:
+        lines = f.readlines()
+        return lines
 
-with open('2.txt', encoding='utf-8') as file_2:
-    counter_2 = 0
-    lines_2 = ['2.txt\n']
-    while True:
-        line = file_2.readline()
-        if len(line) == 0:
-            break
-        lines_2.append(line)
-        counter_2 += 1
-lines_2.insert(1, str(counter_2))
-lines_2.insert(2, '\n')  
-print(lines_2)
+def list_file(files):
+        list = []
+        len_dict = {}
+        for el in files:
+            len_dict |= {len(read_file(el)):[el, read_file(el)]}
+        for key, value in sorted(len_dict.items(), key = lambda x: x[0]):
+            list.append(value[0])
+            list.append('\n')
+            list.append(str(key))
+            list.append('\n')
+            for v in value[1]:
+                list.append(v)
+            list.append('\n')
+        return list
 
-with open('3.txt', 'a', encoding='utf-8') as file_3:
-    if counter_1 >= counter_2:
-        file_3.writelines(lines_1)
-        file_3.write('\n')
-        file_3.writelines(lines_2)
-    else:
-        file_3.writelines(lines_2)
-        file_3.write('\n')
-        file_3.writelines(lines_1)
+def write_file(new_file, files):
+    with open(new_file, 'a', encoding='utf-8') as new_f:
+        new_f.writelines(list_file(files))
+
+import os
+directory = (r'C:\Users\Natalia\Desktop\PYTHON\Files')
+files = os.listdir(directory)
+for name in files:
+    write_file('3.txt', files)
+
+# write_file('3.txt', ['1.txt', '2.txt'])
 
         
